@@ -4,6 +4,7 @@
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<link rel="stylesheet" href="css/style.css" type="text/css" />
 		<title>Todo</title>
 	</head>
 	<body>
@@ -34,8 +35,29 @@
 						'<input class="tdiCheck" type="checkbox" name="isComplete" ' +
 						(tdi.isComplete ? "checked" : "") +
 						' value="isComplete" />' +
+						'<span class="delete">X </span>' +
 						`<span>${tdi.name}</span>`;
 					elTasks.appendChild(elTdi);
+				});
+
+				let elsDels = document.querySelectorAll(".delete");
+				elsDels.forEach(el => {
+					console.log(el);
+					el.addEventListener("click", async e => {
+						let id = el.parentElement.id;
+						const deleteResult = await fetch(
+							"https://localhost:5001/api/Todo/" + id,
+							{
+								method: "DELETE",
+								headers: {
+									Accept: "application/json",
+									"Content-Type": "application/json"
+								}
+							}
+						);
+
+						getTodos();
+					});
 				});
 
 				let elsChecks = document.querySelectorAll(".tdiCheck");
